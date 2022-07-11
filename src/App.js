@@ -1,25 +1,44 @@
-import logo from './logo.svg';
-import './App.css';
+//creating a new application
+///this is the app.js our entry point
+import FeedbackData from './components/Data';
+import { useState } from 'react';
+import FeedbackList from './components/FeedbackList';
+//importing the uuid component
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+import { v4 as uuidv4 } from 'uuid';
+//importing the styles
+import "./style.css"
+import FeedbackStats from './components/FeedbackStats';
+import Form from './components/Form';
+function App(){
+    const [feedback, setFeedback] = useState(FeedbackData);
+    //function to delete on click
+
+    
+        const handleDelete = (id) => {
+            if(window.confirm("Are you sure you want to Delete? ")){
+            const a = feedback.filter(
+                (item)=> item.id !== id
+            )
+            setFeedback(a)
+    
+            }
+        }
+
+
+        //function to handle the addition of data
+
+
+        const addFeedback = (newFeedback) => {
+            newFeedback.id = uuidv4()
+            setFeedback([newFeedback, ...feedback])
+        }
+    return(
+        <div className="container">
+            <Form handleAdd={addFeedback}/>
+            <FeedbackStats item={feedback}/>
+            <FeedbackList item={feedback} handleDelete={handleDelete}/>
+        </div>
+    )
 }
-
-export default App;
+export default App
